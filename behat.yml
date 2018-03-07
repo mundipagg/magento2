@@ -4,11 +4,13 @@ default:
     - "%paths.base%/Test/Acceptance/"
   extensions:
     Behat\MinkExtension:
-      base_url: http://pagarme-magento.dev/
+      base_url: http://magento/
       sessions:
         default_session:
           selenium2:
             wd_host: 'http://selenium:4444/wd/hub'
+            capabilities:
+              version: ''
   suites:
     magento_base:
       paths:
