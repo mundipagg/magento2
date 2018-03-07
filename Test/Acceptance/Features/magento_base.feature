@@ -7,3 +7,4 @@ Feature: Magento Base
         Given a magento ecommerce
         When I access its  homepage
         Then I should see the ecommerce logo
+        And a products list
