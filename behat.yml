@@ -1,0 +1,31 @@
+# behat.yml
+default:
+  autoload:
+    - "%paths.base%/Test/Acceptance/"
+  extensions:
+    Behat\MinkExtension:
+      base_url: http://magento.local/
+      sessions:
+        default_session:
+          selenium2:
+            wd_host: 'http://selenium:4444/wd/hub'
+            capabilities:
+              version: ''
+  suites:
+    magento_base:
+      paths:
+        - "%paths.base%/Test/Acceptance/Features/magento_base.feature"
+      contexts:
+        - MagentoBaseContext
+
+    admin:
+      paths:
+        - "%paths.base%/Test/Acceptance/Features/admin.feature"
+      contexts:
+        - AdminContext
+
+    creditcard:
+      paths:
+        - "%paths.base%/Test/Acceptance/Features/creditcard.feature"
+      contexts:
+        - CreditCardContext
