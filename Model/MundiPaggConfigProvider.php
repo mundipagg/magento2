@@ -76,7 +76,24 @@ class MundiPaggConfigProvider
      */
     public function getModuleStatus()
     {
-        return $this->scopeConfig->getValue(self::XML_PATH_ATIVE, ScopeInterface::SCOPE_STORE);
+        $country = $this->getStoreCountry();
+
+        // @todo create an option to select which countries the module will be available
+        if ($country !== 'BR') {
+            return false;
+        }
+
+        return $this->scopeConfig->getValue(
+            self::XML_PATH_ATIVE,
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
+    public function getStoreCountry()
+    {
+        return $this->scopeConfig->getValue(
+            'general/country/default',
+            ScopeInterface::SCOPE_STORE
+        );
+    }
 }
