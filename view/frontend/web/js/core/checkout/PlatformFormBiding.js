@@ -11,9 +11,11 @@ FormObject.creditCardInit = function () {
         'creditExpMonth' : jQuery(containerSelector + " input[name='payment[cc_exp_month]']"),
         'creditCardExpYear' : jQuery(containerSelector + " input[name='payment[cc_exp_year]']"),
         'creditCardCvv' : jQuery(containerSelector + " input[name='payment[cc_cid]']"),
-        'creditCardInstallments' : jQuery(containerSelector + " input[name='payment[cc_installments]']"),
+        'creditCardInstallments' : jQuery(containerSelector + " select[name='payment[cc_installments]']"),
         'creditCardBrand' : jQuery(containerSelector + " input[name='payment[cc_type]']")
     };
+
+
 
     return this.FormObject;
 };

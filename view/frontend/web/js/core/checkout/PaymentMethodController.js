@@ -30,6 +30,19 @@ PaymentMethodController.prototype.addCreditCardListeners = function (formObject)
     formObject.creditCardNumber.on('keyup', function () {
         setTimeout(function(){
             bin.init(formObject.creditCardNumber.val());
+
+            console.log(formObject.creditCardInstallments.html());
+
+
+            return jQuery.ajax({
+                type: 'POST',
+                dataType: 'json',
+                data: {'brand': 'visa'},
+                url: 'http://magento2.localhost/rest/default/V1/mundipagg/creditcard/installments',
+                async: false,
+                cache: true,
+            });
+
             formHandler.init(formObject);
             formHandler.switchBrand(bin.selectedBrand);
         }, 1300);
