@@ -20,9 +20,10 @@ CreditCardToken.prototype.getToken = function (pkKey) {
     return jQuery.ajax({
         type: 'POST',
         dataType: 'json',
+        contentType: "application/json; charset=utf-8",
         url: 'https://api.mundipagg.com/core/v1/tokens?appId=' + pkKey,
         async: false,
         cache: true,
-        data
+        data: JSON.stringify(data)
     });
 }
