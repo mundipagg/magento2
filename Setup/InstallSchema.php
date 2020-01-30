@@ -17,7 +17,8 @@ class InstallSchema implements InstallSchemaInterface
     public function install(
         SchemaSetupInterface $setup,
         ModuleContextInterface $context
-    ) {
+    )
+    {
         $installer = $setup;
         $installer->startSetup();
 
@@ -34,13 +35,15 @@ class InstallSchema implements InstallSchemaInterface
         $this->installRecurrenceCharge($setup);
         $this->installSubProducts($setup);
         $this->installProductsPlan($setup);
+        $this->installChargeFailed($setup);
 
         $setup->endSetup();
     }
 
     public function installConfig(
         SchemaSetupInterface $installer
-    ) {
+    )
+    {
         $tableName = $installer->getTable('mundipagg_module_core_configuration');
         if (!$installer->getConnection()->isTableExists($tableName)) {
             $configTable = $installer->getConnection()
@@ -76,7 +79,8 @@ class InstallSchema implements InstallSchemaInterface
 
     public function installWebhook(
         SchemaSetupInterface $installer
-    ) {
+    )
+    {
         $tableName = $installer->getTable('mundipagg_module_core_webhook');
         if (!$installer->getConnection()->isTableExists($tableName)) {
             $webhookTable = $installer->getConnection()
@@ -122,7 +126,8 @@ class InstallSchema implements InstallSchemaInterface
 
     public function installOrder(
         SchemaSetupInterface $installer
-    ) {
+    )
+    {
         $tableName = $installer->getTable('mundipagg_module_core_order');
         if (!$installer->getConnection()->isTableExists($tableName)) {
             $webhookTable = $installer->getConnection()
@@ -177,7 +182,8 @@ class InstallSchema implements InstallSchemaInterface
 
     public function installCharge(
         SchemaSetupInterface $installer
-    ) {
+    )
+    {
         $tableName = $installer->getTable('mundipagg_module_core_charge');
         if (!$installer->getConnection()->isTableExists($tableName)) {
             $webhookTable = $installer->getConnection()
@@ -281,7 +287,8 @@ class InstallSchema implements InstallSchemaInterface
 
     public function installTransaction(
         SchemaSetupInterface $installer
-    ) {
+    )
+    {
         $tableName = $installer->getTable('mundipagg_module_core_transaction');
         if (!$installer->getConnection()->isTableExists($tableName)) {
             $webhookTable = $installer->getConnection()
@@ -1275,6 +1282,79 @@ class InstallSchema implements InstallSchemaInterface
 
             $installer->getConnection()->createTable($configTable);
         }
+        return $installer;
+    }
+
+    public function installChargeFailed(SchemaSetupInterface $installer) {
+        $tableName = $installer->getTable('mundipagg_module_core_charge_failed');
+        if (!$installer->getConnection()->isTableExists($tableName)) {
+            $table = $installer->getConnection()
+                ->newTable($tableName)
+                ->addColumn(
+                    'id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary' => true
+                    ],
+                    'ID'
+                )
+                ->addColumn(
+                    'mundipagg_id',
+                    Table::TYPE_TEXT,
+                    19,
+                    [
+                        'nullable' => false
+                    ],
+                    'format: ch_xxxxxxxxxxxxxxxx'
+                )
+                ->addColumn(
+                    'order_id',
+                    Table::TYPE_TEXT,
+                    19,
+                    [
+                        'nullable' => false
+                    ],
+                    'format: or_xxxxxxxxxxxxxxxx'
+                )
+                ->addColumn(
+                    'code',
+                    Table::TYPE_TEXT,
+                    100,
+                    [
+                        'nullable' => false,
+                    ],
+                    'Code'
+                )
+                ->addColumn(
+                    'amount',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false,
+                    ],
+                    'amount'
+                )
+                ->addColumn(
+                    'status',
+                    Table::TYPE_TEXT,
+                    30,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false,
+                    ],
+                    'Status'
+                )
+                ->setComment('Charge Failed Table')
+                ->setOption('charset', 'utf8');
+
+            $installer->getConnection()->createTable($table);
+        }
+
         return $installer;
     }
 }
