@@ -34,22 +34,29 @@ class Magento2PlatformInvoiceDecorator extends AbstractInvoiceDecorator implemen
         return $this->platformInvoice->getIncrementId();
     }
 
-    public function prepareFor(PlatformOrderInterface $order)
+    public function prepareFor(PlatformOrderInterface $order, $itemsToInvoice)
     {
         $platformOrder = $order->getPlatformOrder();
-        $invoiceService = ObjectManager::getInstance()->get('Magento\Sales\Model\Service\InvoiceService');
-        $this->platformInvoice = $invoiceService->prepareInvoice($platformOrder);
+        $invoiceService =
+            ObjectManager::
+                getInstance()
+                ->get('Magento\Sales\Model\Service\InvoiceService');
+
+        $this->platformInvoice = $invoiceService->prepareInvoice
+        (
+            $platformOrder,
+            $itemsToInvoice
+        );
     }
 
     public function createFor(PlatformOrderInterface $order)
     {
-        //$this->platformInvoice = $this->createInvoice($order->getPlatformOrder());
+        $itemsToInvoice = $this->getItemsToInvoice($order);
 
-        //return;
-
-        //@deprecated code
-        $this->prepareFor($order);
-        $this->platformInvoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_OFFLINE);
+        $this->prepareFor($order, $itemsToInvoice);
+        $this->platformInvoice->setRequestedCaptureCase(
+            \Magento\Sales\Model\Order\Invoice::CAPTURE_OFFLINE
+        );
         $this->platformInvoice->register();
 
         $grandTotal = $order->getTotalPaidFromCharges();
@@ -113,6 +120,11 @@ class Magento2PlatformInvoiceDecorator extends AbstractInvoiceDecorator implemen
         $transaction = $objectManager->get(Transaction::class);
         $invoiceSender = $objectManager->get(InvoiceSender::class);
 
+        $itemsArray = [
+            $order->getIncrementId() =>
+            count($order->getItemCollection())
+        ];
+
         $invoice = $invoiceService->prepareInvoice($order);
         $invoice->setRequestedCaptureCase(\Magento\Sales\Model\Order\Invoice::CAPTURE_OFFLINE);
         $invoice->register();
@@ -124,9 +136,6 @@ class Magento2PlatformInvoiceDecorator extends AbstractInvoiceDecorator implemen
         );
         $transactionSave->save();
 
-        //Remove comments if you need to send e-mail here until we don't create
-        //a class for e-mail sending.
-        //$invoiceSender->send($invoice);
 
         $order->addStatusHistoryComment(
             'MP - ' .
@@ -164,5 +173,16 @@ class Magento2PlatformInvoiceDecorator extends AbstractInvoiceDecorator implemen
     protected function addMPComment($comment)
     {
         $this->platformInvoice->addComment($comment);
+    }
+
+    protected function getItemsToInvoice(PlatformOrderInterface $order)
+    {
+        $orderItems = $order->getPlatformOrder()->getItems();
+        $itemsToInvoice = [];
+        foreach ($orderItems as $item) {
+            $itemsToInvoice[$item->getId()] = $item->getQtyOrdered();
+        }
+
+        return $itemsToInvoice;
     }
 }
