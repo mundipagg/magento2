@@ -120,8 +120,13 @@ class Magento2PlatformOrderDecorator extends AbstractPlatformOrderDecorator
     public function sendEmail($message)
     {
         $objectManager = ObjectManager::getInstance();
+        $moduleCondiguration = MPSetup::getModuleConfiguration();
 
-        $sendConfigGlobalEmail = MPSetup::getModuleConfiguration()->isSendMailEnabled();
+        if (!method_exists($moduleCondiguration, 'isSendMailEnabled')) {
+            return false;
+        }
+
+        $sendConfigGlobalEmail = $moduleCondiguration->isSendMailEnabled();
 
         if (!$sendConfigGlobalEmail) {
             return false;
