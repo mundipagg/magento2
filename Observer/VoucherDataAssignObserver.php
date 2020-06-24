@@ -63,6 +63,7 @@ class VoucherDataAssignObserver extends AbstractDataAssignObserver
         $info->setAdditionalInformation('cc_type', $additionalData->getCcType());
         $info->setAdditionalInformation('cc_last_4', substr($additionalData->getCcLast4(),-4));
         $info->setAdditionalInformation('cc_token_credit_card', $additionalData->getCcTokenCreditCard());
+        $info->setAdditionalInformation('cc_cvv_card', $additionalData->getData('cc_cvv_card'));
         $info->addData([
             'cc_type' => $additionalData->getCcType(),
             'cc_owner' => $additionalData->getCcOwner(),
