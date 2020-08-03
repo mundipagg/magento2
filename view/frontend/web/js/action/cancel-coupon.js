@@ -37,7 +37,26 @@ define([
 ) {
     'use strict';
 
-    return function (isApplied) {
+    var successCallbacks = [],
+        action,
+        callSuccessCallbacks;
+
+    /**
+     * Execute callbacks when a coupon is successfully canceled.
+     */
+    callSuccessCallbacks = function () {
+        successCallbacks.forEach(function (callback) {
+            callback();
+        });
+    };
+
+    /**
+     * Cancel applied coupon.
+     *
+     * @param {Boolean} isApplied
+     * @returns {Deferred}
+     */
+    action = function (isApplied) {
         var quoteId = quote.getQuoteId(),
             url = urlManager.getCancelCouponUrl(quoteId),
             message = $t('Your coupon was successfully removed.');
@@ -108,4 +127,16 @@ define([
             errorProcessor.process(response, messageContainer);
         });
     };
+    
+    
+    /**
+     * Callback for when the cancel-coupon process is finished.
+     *
+     * @param {Function} callback
+     */
+    action.registerSuccessCallback = function (callback) {
+        successCallbacks.push(callback);
+    };
+
+    return action;
 });
