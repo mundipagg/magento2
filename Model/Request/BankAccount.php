@@ -2,7 +2,9 @@
 
 namespace MundiPagg\MundiPagg\Model\Request;
 
-class BankAccount implements \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperInterface
+use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface;
+
+class BankAccount implements BankAccountMapperRequestInterface
 {
     /**
      * @var string

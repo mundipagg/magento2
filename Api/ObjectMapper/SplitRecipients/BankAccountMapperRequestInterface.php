@@ -4,7 +4,7 @@ namespace MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients;
 
 use Mundipagg\Core\Split\Interfaces\BankAccountInterface;
 
-interface BankAccountMapperInterface  //extends \Mundipagg\Core\Split\Interfaces\BankAccountInterface
+interface BankAccountMapperRequestInterface
 {
     /**
      * @param string

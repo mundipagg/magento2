@@ -4,7 +4,7 @@ namespace MundiPagg\MundiPagg\Model\Response;
 
 use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperResponseInterface;
 
-class Recipient extends \MundiPagg\MundiPagg\Model\Request\Recipient implements \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperResponseInterface
+class Recipient extends \MundiPagg\MundiPagg\Model\Request\Recipient implements SplitRecipientsMapperResponseInterface
 {
     /**
      * @var string

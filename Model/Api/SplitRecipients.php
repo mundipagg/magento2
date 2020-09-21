@@ -4,17 +4,19 @@ namespace MundiPagg\MundiPagg\Model\Api;
 
 use Exception;
 use Magento\Framework\Webapi\Rest\Request;
+use MundiAPILib\APIException;
 use MundiAPILib\Configuration;
 use MundiAPILib\MundiAPIClient;
+use Mundipagg\Core\Kernel\Exceptions\InvalidParamException;
 use Mundipagg\Core\Kernel\Services\LocalizationService;
 use Mundipagg\Core\Kernel\Services\LogService;
-use Mundipagg\Core\Kernel\Services\MoneyService;
 use Mundipagg\Core\Split\Repositories\RecipientRepository;
 use Mundipagg\Core\Split\Services\RecipientService;
+use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperRequestInterface;
+use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperResponseInterface;
 use MundiPagg\MundiPagg\Api\SplitRecipientsApiInterface;
 use MundiPagg\MundiPagg\Concrete\Magento2CoreSetup;
 use MundiPagg\MundiPagg\Helper\SplitHelper;
-use Throwable;
 
 class SplitRecipients implements SplitRecipientsApiInterface
 {
@@ -29,11 +31,6 @@ class SplitRecipients implements SplitRecipientsApiInterface
     protected $recipientService;
 
     /**
-     * @var MoneyService
-     */
-    private $moneyService;
-
-    /**
      * @var LocalizationService
      */
     private $i18n;
@@ -45,15 +42,10 @@ class SplitRecipients implements SplitRecipientsApiInterface
      */
     public function __construct(Request $request)
     {
-        $this->request = $request;
         Magento2CoreSetup::bootstrap();
-        $this->i18n = new LocalizationService();
-        $this->moneyService = new MoneyService();
 
-        $logService = new LogService(
-            'RecipientService',
-            true
-        );
+        $this->request = $request;
+        $this->i18n = new LocalizationService();
 
         $config = Magento2CoreSetup::getModuleConfiguration();
 
@@ -64,49 +56,37 @@ class SplitRecipients implements SplitRecipientsApiInterface
 
         Configuration::$basicAuthPassword = '';
 
-        $mundipaggApi = new MundiAPIClient($secretKey, '');
-
         $this->recipientService = new RecipientService(
-            $logService,
+            new LogService('RecipientService', true),
             new RecipientRepository(),
-            $mundipaggApi
+            new MundiAPIClient($secretKey, '')
         );
     }
 
     /**
-     * @param \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperInterface $splitRecipient
+     * @param SplitRecipientsMapperRequestInterface $splitRecipient
      * @param int $id
-     * @return \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperResponseInterface|array
+     * @return SplitRecipientsMapperResponseInterface|array
+     * @throws APIException
+     * @throws InvalidParamException
+     * @throws Exception
      */
     public function save($splitRecipient, $id = null)
     {
-        try {
-            SplitHelper::validateRecipientRequest($splitRecipient);
+        SplitHelper::validateRecipientRequest($splitRecipient);
 
-            $splitRecipient = SplitHelper::mapperRecipientRequest($splitRecipient);
+        $splitRecipient = SplitHelper::mapperRecipientRequest($splitRecipient);
+        $this->recipientService->save($splitRecipient);
 
-            $this->recipientService->save($splitRecipient);
-
-            return SplitHelper::mapperRecipientResponse($splitRecipient);
-        } catch (Exception $exception) {
-            return [
-                'code' => 404,
-                'message' => $exception->getMessage()
-            ];
-        } catch (Throwable $exception) {
-            return [
-                'code' => 404,
-                'message' => $exception->getMessage()
-            ];
-        }
-
-        return $splitRecipient;
+        return SplitHelper::mapperRecipientResponse($splitRecipient);
     }
 
     /**
      * @param int $id
-     * @param \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperInterface $splitRecipient
-     * @return \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperResponseInterface|array
+     * @param SplitRecipientsMapperRequestInterface $splitRecipient
+     * @return SplitRecipientsMapperResponseInterface|array
+     * @throws APIException
+     * @throws InvalidParamException
      */
     public function update($id, $splitRecipient)
     {

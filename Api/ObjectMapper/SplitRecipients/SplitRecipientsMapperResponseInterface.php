@@ -2,10 +2,7 @@
 
 namespace MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients;
 
-use Mundipagg\Core\Split\Interfaces\BankAccountInterface;
-use Mundipagg\Core\Split\Interfaces\RecipientInterface;
-
-interface SplitRecipientsMapperResponseInterface extends SplitRecipientsMapperInterface
+interface SplitRecipientsMapperResponseInterface extends SplitRecipientsMapperRequestInterface
 {
     /**
      * @return string

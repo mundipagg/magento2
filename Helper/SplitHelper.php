@@ -5,26 +5,33 @@ namespace MundiPagg\MundiPagg\Helper;
 use Exception;
 use Magento\Customer\Model\Customer;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\IntegrationException;
+use Magento\Framework\Module\Manager;
 use Mundipagg\Core\Kernel\ValueObjects\Type;
 use Mundipagg\Core\Split\Aggregates\BankAccount;
 use Mundipagg\Core\Split\Aggregates\Recipient;
 use Mundipagg\Core\Split\Interfaces\RecipientInterface;
 use Mundipagg\Core\Split\Repositories\RecipientRepository;
 use Mundipagg\Core\Split\ValueObjects\TypeBankAccount;
-use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperInterface;
+use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperRequestInterface;
 use MundiPagg\MundiPagg\Model\Response\BankAccount as BankAccountResponse;
 use MundiPagg\MundiPagg\Model\Response\Recipient as RecipientResponse;
 use Webkul\Marketplace\Model\Seller;
 
 class SplitHelper
 {
+    private const MODULE_MARKETPLACE_NAME = 'Webkul_Marketplace';
+
     /**
-     * @param SplitRecipientsMapperInterface $recipientRequest
+     * @param SplitRecipientsMapperRequestInterface $recipientRequest
      * @return RecipientInterface
      * @throws Exception
      */
-    public static function mapperRecipientRequest(SplitRecipientsMapperInterface $recipientRequest)
-    {
+    public static function mapperRecipientRequest(
+        SplitRecipientsMapperRequestInterface $recipientRequest
+    ) {
         $recipientCore = new Recipient();
         $bankAccountCore = new BankAccount();
 
@@ -92,9 +99,14 @@ class SplitHelper
         if (strlen($document) == 11 && ($document !== null)) {
             $type = Type::individual();
         }
+
         return $type;
     }
 
+    /**
+     * @param RecipientInterface $recipientCore
+     * @return RecipientResponse
+     */
     public static function mapperRecipientResponse(RecipientInterface $recipientCore)
     {
         $recipientResponse = new RecipientResponse();
@@ -104,7 +116,6 @@ class SplitHelper
         $recipientResponse->setDescription($recipientCore->getDescription());
         $recipientResponse->setDocument($recipientCore->getDocument());
         $recipientResponse->setIsMarketPlace($recipientCore->isMarketPlace());
-        //   $recipientResponse->setType($recipientCore->getType()->getValue());
         $recipientResponse->setId($recipientCore->getId());
         $recipientResponse->setMundipaggId($recipientCore->getMundipaggId()->getValue());
         $recipientResponse->setExternalRecipientId($recipientCore->getExternalRecipientId());
@@ -114,22 +125,10 @@ class SplitHelper
 
         $bankAccountResponse = new BankAccountResponse();
 
-        //  $bankAccountResponse->setHolderName($bankAccountCore->getHolderName());
-        //  $bankAccountResponse->setHolderType($bankAccountCore->getHolderType()->getValue());
-        //  $bankAccountResponse->setHolderDocument($bankAccountCore->getHolderDocument());
         $bankAccountResponse->setBank($bankAccountCore->getBank());
         $bankAccountResponse->setBranchNumber($bankAccountCore->getBranchNumber());
         $bankAccountResponse->setBranchCheckDigit($bankAccountCore->getBranchCheckDigit());
         $bankAccountResponse->setAccountNumber($bankAccountCore->getAccountNumber());
-        $bankAccountResponse->setAccountCheckDigit($bankAccountCore->getAccountCheckDigit());
-
-//        $type = Type::company();
-//        if (strlen($recipientPrevious->getDocument()) == 11 && ($recipientPrevious->getDocument() !== null)) {
-//            $type = Type::individual();
-//        }
-
-        //   $recipientCore->setType($type);
-
         $bankAccountResponse->setType($bankAccountCore->getType()->getValue());
 
         $recipientResponse->setBankAccount($bankAccountResponse);
@@ -138,27 +137,59 @@ class SplitHelper
     }
 
     /**
-     * @param RecipientInterface $recipient
+     * @param SplitRecipientsMapperRequestInterface $recipient
      * @throws Exception
      */
-    public static function validateRecipientRequest(SplitRecipientsMapperInterface $recipient)
-    {
+    public static function validateRecipientRequest(
+        SplitRecipientsMapperRequestInterface $recipient
+    ) {
         $objectManager = ObjectManager::getInstance();
+
+        /**
+         * @var Manager $moduleManager
+         */
+        $moduleManager = $objectManager->get(Manager::class);
+
+        if (!$moduleManager->isEnabled(self::MODULE_MARKETPLACE_NAME)) {
+            $moduleName = self::MODULE_MARKETPLACE_NAME;
+            throw new IntegrationException(
+                __("Module {$moduleName} not found/enabled"),
+                null,
+                null
+            );
+        }
+
+        /**
+         * @var Seller $seller
+         */
         $seller = $objectManager->get(Seller::class)->load(
             $recipient->getExternalRecipientId()
         );
 
         if (!$recipient->isMarketPlace() && !(bool)$seller->getData("is_seller")) {
-            throw new Exception("it's not a seller");
-        }
-
-        if ($recipient->isMarketPlace()) {
-            // só pode ter um
+            throw new IntegrationException(__("It's not a seller"), null, null);
         }
 
         if ($recipient->isMarketPlace() && $recipient->getExternalRecipientId() !== null) {
-            // se cair aqui montou o json request errado
-            throw new Exception("bad request!!!!");
+            throw new InputException(
+                __("It's not possible to pass marketplace and externalRecipientId"),
+                null,
+                null
+            );
+        }
+
+        $recipientMKTList = null;
+        if ($recipient->isMarketPlace() && $recipient->getId() === null) {
+            $recipientRepository = new RecipientRepository();
+            $recipientMKTList = $recipientRepository->getMarketplaceUser();
+        }
+
+        if ($recipientMKTList !== null) {
+            throw new AlreadyExistsException(
+                __("It's not possible to have more the one Recipient MKT"),
+                null,
+                null
+            );
         }
     }
 }

@@ -2,7 +2,10 @@
 
 namespace MundiPagg\MundiPagg\Model\Request;
 
-class Recipient implements \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperInterface
+use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface;
+use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperRequestInterface;
+
+class Recipient implements SplitRecipientsMapperRequestInterface
 {
     /**
      * @var string
@@ -20,7 +23,7 @@ class Recipient implements \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients
     private $description;
 
     /**
-     * @var \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperInterface
+     * @var BankAccountMapperRequestInterface
      */
     private $bankAccount;
 
@@ -121,7 +124,7 @@ class Recipient implements \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients
     }
 
     /**
-     * @return \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperInterface
+     * @return BankAccountMapperRequestInterface
      */
     public function getBankAccount()
     {
@@ -129,9 +132,9 @@ class Recipient implements \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients
     }
 
     /**
-     * @param \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperInterface $bankAccount
+     * @param BankAccountMapperRequestInterface $bankAccount
      */
-    public function setBankAccount(\MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperInterface $bankAccount)
+    public function setBankAccount(BankAccountMapperRequestInterface $bankAccount)
     {
         $this->bankAccount = $bankAccount;
     }

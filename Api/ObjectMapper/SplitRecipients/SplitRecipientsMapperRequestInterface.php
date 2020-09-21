@@ -2,10 +2,9 @@
 
 namespace MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients;
 
-use Mundipagg\Core\Split\Interfaces\BankAccountInterface;
 use Mundipagg\Core\Split\Interfaces\RecipientInterface;
 
-interface SplitRecipientsMapperInterface // extends \Mundipagg\Core\Split\Interfaces\RecipientInterface
+interface SplitRecipientsMapperRequestInterface
 {
 
     /**
@@ -86,15 +85,18 @@ interface SplitRecipientsMapperInterface // extends \Mundipagg\Core\Split\Interf
     public function setStatus($status);
 
     /**
-     * @return \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperInterface
+     * @return \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface
      */
     public function getBankAccount();
 
     /**
-     * @param \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperInterface $bankAccount
+     * @param \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface $bankAccount
      * @return RecipientInterface
      */
-    public function setBankAccount(\MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperInterface $bankAccount);
+    public function setBankAccount(
+        \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface
+        $bankAccount
+    );
 
     /**
      * @return bool

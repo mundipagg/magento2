@@ -2,8 +2,6 @@
 
 namespace MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients;
 
-use Mundipagg\Core\Split\Interfaces\BankAccountInterface;
-
-interface BankAccountMapperResponseInterface extends BankAccountMapperInterface
+interface BankAccountMapperResponseInterface extends BankAccountMapperRequestInterface
 {
 }
