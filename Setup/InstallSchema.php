@@ -1360,4 +1360,286 @@ class InstallSchema implements InstallSchemaInterface
         }
         return $installer;
     }
+
+    public function installSplitRecipient(SchemaSetupInterface $installer)
+    {
+        $tableName = $installer->getTable(
+            'mundipagg_module_core_split_recipient'
+        );
+
+        if (!$installer->getConnection()->isTableExists($tableName)) {
+            $configTable = $installer->getConnection()
+                ->newTable($tableName)
+                ->addColumn(
+                    'id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary' => true
+                    ],
+                    'ID'
+                )
+                ->addColumn(
+                    'mundipagg_id',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    'format: rp_xxxxxxxxxxxxxxxx'
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'external_recipient_id',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'name',
+                    Table::TYPE_TEXT,
+                    100,
+                    [
+                        'nullable' => false,
+                    ],
+                    null
+                )
+                ->addColumn(
+                    'document',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false,
+                    ],
+                    null
+                )
+                ->addColumn(
+                    'email',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false,
+                    ],
+                    null
+                )
+                ->addColumn(
+                    'status',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false,
+                    ],
+                    null
+                )
+                ->addColumn(
+                    'description',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => false,
+                    ],
+                    null
+                )
+                ->addColumn(
+                    'is_marketplace',
+                    Table::TYPE_BOOLEAN,
+                    11,
+                    [
+                        'nullable' => false
+                    ],
+                    "Is Marketplace?"
+                )
+                ->addColumn(
+                    'meta_data',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'unsigned' => true,
+                        'nullable' => true,
+                    ],
+                    null
+                )
+                ->addColumn(
+                    'created_at',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+                    'Created At'
+                )
+                ->addColumn(
+                    'updated_at',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
+                    'Updated At'
+                )
+                ->setOption('charset', 'utf8');
+
+            $installer->getConnection()->createTable($configTable);
+        }
+        return $installer;
+    }
+
+    public function installSplitRecipientBankAccount(SchemaSetupInterface $installer)
+    {
+        $tableName = $installer->getTable(
+            'mundipagg_module_core_split_recipient_bank_account'
+        );
+
+        if (!$installer->getConnection()->isTableExists($tableName)) {
+            $configTable = $installer->getConnection()
+                ->newTable($tableName)
+                ->addColumn(
+                    'id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary' => true
+                    ],
+                    'ID'
+                )
+                ->addColumn(
+                    'recipient_id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    'foreign key mundipagg_module_core_split_recipient.id'
+                )
+                ->addColumn(
+                    'holder_name',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'holder_type',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'holder_document',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'bank',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'branch_number',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'branch_check_digit',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'account_number',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'account_check_digit',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'type',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'meta_data',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => true
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'created_at',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+                    'Created At'
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'updated_at',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
+                    'Updated At'
+                )
+                ->setOption('charset', 'utf8');
+
+            $installer->getConnection()->createTable($configTable);
+        }
+        return $installer;
+    }
 }

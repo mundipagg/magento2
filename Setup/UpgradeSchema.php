@@ -83,6 +83,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $setup = $installSchema->installSubscriptionItems($setup);
         }
 
+        /* @TODO depois adicionar qual versão vai instalar as tabelas     */
+        $setup = $installSchema->installSplitRecipient($setup);
+        $setup = $installSchema->installSplitRecipientBankAccount($setup);
+
         $setup->endSetup();
     }
 
