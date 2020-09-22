@@ -62,7 +62,7 @@ class SplitHelper
             $recipientCore
                 ->setName($customer->getName())
                 ->setEmail($customer->getEmail())
-                ->setDescription("testando ver de onde pegar")
+                ->setDescription("description default")
                 ->setDocument($customer->getDataByKey('taxvat'));
         }
 
