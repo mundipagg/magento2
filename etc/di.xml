@@ -617,6 +617,8 @@
     <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperResponseInterface" type="MundiPagg\MundiPagg\Model\Response\Recipient" />
     <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperResponseInterface" type="MundiPagg\MundiPagg\Model\Response\BankAccount" />
 
+    <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperRequestInterface" type="MundiPagg\MundiPagg\Model\Request\TransferSetting" />
+    <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperResponseInterface" type="MundiPagg\MundiPagg\Model\Response\TransferSetting" />
 
 <!--    Mundipagg\\Core\\Split\\Interfaces\\BankAccountInterface-->
     <!-- Admin checkout -->
