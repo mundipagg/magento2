@@ -6,7 +6,6 @@ use Mundipagg\Core\Split\Interfaces\RecipientInterface;
 
 interface SplitRecipientsMapperRequestInterface
 {
-
     /**
      * @return int
      */
@@ -97,6 +96,20 @@ interface SplitRecipientsMapperRequestInterface
         \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface
         $bankAccount
     );
+
+    /**
+     * @param \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperRequestInterface $transferSettings
+     * @return RecipientInterface
+     */
+    public function setTransferSettings(
+        \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperRequestInterface
+        $transferSettings
+    );
+
+    /**
+     * @return \MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperRequestInterface
+     */
+    public function getTransferSettings();
 
     /**
      * @return bool
