@@ -76,9 +76,9 @@ class SplitRecipients implements SplitRecipientsApiInterface
         SplitHelper::validateRecipientRequest($splitRecipient);
 
         $splitRecipient = SplitHelper::mapperRecipientRequest($splitRecipient);
-        $this->recipientService->save($splitRecipient);
+        $recipient = $this->recipientService->save($splitRecipient);
 
-        return SplitHelper::mapperRecipientResponse($splitRecipient);
+        return SplitHelper::mapperRecipientResponse($recipient);
     }
 
     /**
