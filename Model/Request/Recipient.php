@@ -4,6 +4,7 @@ namespace MundiPagg\MundiPagg\Model\Request;
 
 use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface;
 use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperRequestInterface;
+use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperRequestInterface;
 
 class Recipient implements SplitRecipientsMapperRequestInterface
 {
@@ -47,7 +48,15 @@ class Recipient implements SplitRecipientsMapperRequestInterface
      */
     private $document;
 
+    /**
+     * @var int
+     */
     private $id;
+
+    /**
+     * @var TransferSettingsMapperRequestInterface
+     */
+    private $transferSettings;
 
     /**
      * @return int
@@ -173,5 +182,15 @@ class Recipient implements SplitRecipientsMapperRequestInterface
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    public function setTransferSettings(TransferSettingsMapperRequestInterface $transferSettings)
+    {
+        $this->transferSettings = $transferSettings;
+    }
+
+    public function getTransferSettings()
+    {
+        return $this->transferSettings;
     }
 }
