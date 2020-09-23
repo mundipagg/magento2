@@ -55,7 +55,10 @@ final class Magento2DatabaseDecorator extends AbstractDatabaseDecorator
                 $this->db->getTableName('mundipagg_module_core_split_recipient'),
 
             AbstractDatabaseDecorator::TABLE_SPLIT_RECIPIENT_BANK_ACCOUNT =>
-                $this->db->getTableName('mundipagg_module_core_split_recipient_bank_account')
+                $this->db->getTableName('mundipagg_module_core_split_recipient_bank_account'),
+
+            AbstractDatabaseDecorator::TABLE_SPLIT_TRANSFER_SETTING =>
+                $this->db->getTableName('mundipagg_module_core_split_recipient_transfer_settings')
         ];
     }
 
