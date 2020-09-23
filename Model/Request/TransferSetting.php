@@ -2,195 +2,70 @@
 
 namespace MundiPagg\MundiPagg\Model\Request;
 
-use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface;
-use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperRequestInterface;
 use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperRequestInterface;
 
-class Recipient implements SplitRecipientsMapperRequestInterface
+class TransferSetting implements TransferSettingsMapperRequestInterface
 {
     /**
      * @var string
      */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $email;
-
-    /**
-     * @var string
-     */
-    private $description;
-
-    /**
-     * @var BankAccountMapperRequestInterface
-     */
-    private $bankAccount;
-
-    /**
-     * @var int
-     */
-    private $externalRecipientId;
-
-    /**
-     * @var string
-     */
-    private $status;
+    private $transferInterval;
 
     /**
      * @var bool
      */
-    private $isMarketPlace = false;
-
-    /**
-     * @var string
-     */
-    private $document;
+    private $transferEnabled;
 
     /**
      * @var int
      */
-    private $id;
-
-    /**
-     * @var TransferSettingsMapperRequestInterface
-     */
-    private $transferSettings;
-
-    /**
-     * @return int
-     */
-    public function getExternalRecipientId()
-    {
-        return $this->externalRecipientId;
-    }
-
-    /**
-     * @param int $externalRecipientId
-     */
-    public function setExternalRecipientId($externalRecipientId)
-    {
-        $this->externalRecipientId = $externalRecipientId;
-    }
+    private $transferDay;
 
     /**
      * @return string
      */
-    public function getName()
+    public function getTransferInterval()
     {
-        return $this->name;
+        return $this->transferInterval;
     }
 
     /**
-     * @param string $name
+     * @param string $transferInterval
      */
-    public function setName($name)
+    public function setTransferInterval($transferInterval)
     {
-        $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDocument()
-    {
-        return $this->document;
-    }
-
-    /**
-     * @param $document
-     */
-    public function setDocument($document)
-    {
-        $this->document = $document;
-    }
-
-    /**
-     * @return BankAccountMapperRequestInterface
-     */
-    public function getBankAccount()
-    {
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccountMapperRequestInterface $bankAccount
-     */
-    public function setBankAccount(BankAccountMapperRequestInterface $bankAccount)
-    {
-        $this->bankAccount = $bankAccount;
-    }
-
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    public function setStatus($status)
-    {
-        $this->status = $status;
+        $this->transferInterval = $transferInterval;
     }
 
     /**
      * @return bool
      */
-    public function isMarketPlace()
+    public function isTransferEnabled()
     {
-        return $this->isMarketPlace;
+        return $this->transferEnabled;
     }
 
     /**
-     * @param bool $isMarketPlace
+     * @param bool $transferEnabled
      */
-    public function setIsMarketPlace($isMarketPlace)
+    public function setTransferEnabled($transferEnabled)
     {
-        $this->isMarketPlace = $isMarketPlace;
+        $this->transferEnabled = $transferEnabled;
     }
 
-    public function getId()
+    /**
+     * @return int
+     */
+    public function getTransferDay()
     {
-        return $this->id;
+        return $this->transferDay;
     }
 
-    public function setId($id)
+    /**
+     * @param int $transferDay
+     */
+    public function setTransferDay($transferDay)
     {
-        $this->id = $id;
-    }
-
-    public function setTransferSettings(TransferSettingsMapperRequestInterface $transferSettings)
-    {
-        $this->transferSettings = $transferSettings;
-    }
-
-    public function getTransferSettings()
-    {
-        return $this->transferSettings;
+        $this->transferDay = $transferDay;
     }
 }
