@@ -9,15 +9,20 @@ use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\IntegrationException;
 use Magento\Framework\Module\Manager;
+use Mundipagg\Core\Kernel\Helper\Hydrator;
 use Mundipagg\Core\Kernel\ValueObjects\Type;
 use Mundipagg\Core\Split\Aggregates\BankAccount;
 use Mundipagg\Core\Split\Aggregates\Recipient;
+use Mundipagg\Core\Split\Aggregates\TransferSettings;
 use Mundipagg\Core\Split\Interfaces\RecipientInterface;
 use Mundipagg\Core\Split\Repositories\RecipientRepository;
+use Mundipagg\Core\Split\ValueObjects\TransferInterval;
 use Mundipagg\Core\Split\ValueObjects\TypeBankAccount;
 use MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperRequestInterface;
 use MundiPagg\MundiPagg\Model\Response\BankAccount as BankAccountResponse;
 use MundiPagg\MundiPagg\Model\Response\Recipient as RecipientResponse;
+use MundiPagg\MundiPagg\Model\Response\TransferSetting as TransferSettingResponse;
+use ReflectionException;
 use Webkul\Marketplace\Model\Seller;
 
 class SplitHelper
@@ -34,6 +39,7 @@ class SplitHelper
     ) {
         $recipientCore = new Recipient();
         $bankAccountCore = new BankAccount();
+        $transferSettingsCore = new TransferSettings();
 
         if ($recipientRequest->getId() !== null) {
             $recipientRepository = new RecipientRepository();
@@ -86,6 +92,18 @@ class SplitHelper
 
         $recipientCore->setBankAccount($bankAccountCore);
 
+        if ($recipientRequest->getTransferSettings() !== null) {
+            $transferSettingsRequest = $recipientRequest->getTransferSettings();
+            $transferSettingsCore
+                ->setTransferInterval(new TransferInterval(
+                    $transferSettingsRequest->getTransferInterval()
+                ))
+                ->setTransferDay($transferSettingsRequest->getTransferDay())
+                ->setTransferEnabled($transferSettingsRequest->isTransferEnabled());
+
+            $recipientCore->setTransferSettings($transferSettingsCore);
+        }
+
         return $recipientCore;
     }
 
@@ -122,7 +140,6 @@ class SplitHelper
         $recipientResponse->setStatus($recipientCore->getStatus()->getValue());
 
         $bankAccountCore = $recipientCore->getBankAccount();
-
         $bankAccountResponse = new BankAccountResponse();
 
         $bankAccountResponse->setBank($bankAccountCore->getBank());
@@ -132,6 +149,17 @@ class SplitHelper
         $bankAccountResponse->setType($bankAccountCore->getType()->getValue());
 
         $recipientResponse->setBankAccount($bankAccountResponse);
+
+        $transferSettingsCore = $recipientCore->getTransferSettings();
+        $transferSettingResponse = new TransferSettingResponse();
+
+        $transferSettingResponse->setTransferInterval(
+            $transferSettingsCore->getTransferInterval()->getValue()
+        );
+        $transferSettingResponse->setTransferDay($transferSettingsCore->getTransferDay());
+        $transferSettingResponse->setTransferEnabled($transferSettingsCore->isTransferEnabled());
+
+        $recipientResponse->setTransferSettings($transferSettingResponse);
 
         return $recipientResponse;
     }
@@ -191,5 +219,40 @@ class SplitHelper
                 null
             );
         }
+
+        if ($recipient->isMarketPlace()) {
+            self::checkFieldsRequired($recipient,
+                ['status', 'externalRecipientId', 'id', 'document', 'transferSettings']
+            );
+            return;
+        }
+
+        self::checkFieldsRequired($recipient,
+            ['status', 'externalRecipientId', 'id', 'document', 'transferSettings', 'name', 'email', 'description']
+        );
+    }
+
+    /**
+     * @param SplitRecipientsMapperRequestInterface $recipient
+     * @throws ReflectionException
+     */
+    private static function checkFieldsRequired(
+        SplitRecipientsMapperRequestInterface $recipient,
+        $propertyListDontCheck
+    ) {
+        $recipientArray = Hydrator::extractRecursive($recipient);
+
+        array_walk_recursive(
+            $recipientArray,
+            function ($leafvalue, $key) use ($propertyListDontCheck) {
+                if ($leafvalue === null && !in_array($key, $propertyListDontCheck)) {
+                    throw new InputException(
+                        __("The '{$key}' is required"),
+                        null,
+                        null
+                    );
+                }
+            }
+        );
     }
 }
