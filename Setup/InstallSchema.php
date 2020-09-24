@@ -1642,4 +1642,85 @@ class InstallSchema implements InstallSchemaInterface
         }
         return $installer;
     }
+
+    public function installSplitRecipientTransferSettings(SchemaSetupInterface $installer)
+    {
+        $tableName = $installer->getTable(
+            'mundipagg_module_core_split_recipient_transfer_settings'
+        );
+
+        if (!$installer->getConnection()->isTableExists($tableName)) {
+            $configTable = $installer->getConnection()
+                ->newTable($tableName)
+                ->addColumn(
+                    'id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'identity' => true,
+                        'unsigned' => true,
+                        'nullable' => false,
+                        'primary' => true
+                    ],
+                    'ID'
+                )
+                ->addColumn(
+                    'recipient_id',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    'foreign key mundipagg_module_core_split_recipient.id'
+                )
+                ->addColumn(
+                    'transfer_enabled',
+                    Table::TYPE_BOOLEAN,
+                    11,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->addColumn(
+                    'transfer_interval',
+                    Table::TYPE_TEXT,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'transfer_day',
+                    Table::TYPE_INTEGER,
+                    null,
+                    [
+                        'nullable' => false
+                    ],
+                    null
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'created_at',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
+                    'Created At'
+                )
+                ->setOption('charset', 'utf8')
+                ->addColumn(
+                    'updated_at',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
+                    null,
+                    ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT_UPDATE],
+                    'Updated At'
+                )
+                ->setOption('charset', 'utf8');
+
+            $installer->getConnection()->createTable($configTable);
+        }
+        return $installer;
+    }
 }

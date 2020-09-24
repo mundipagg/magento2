@@ -221,31 +221,43 @@ class SplitHelper
         }
 
         if ($recipient->isMarketPlace()) {
-            self::checkFieldsRequired($recipient,
+            self::checkFieldsRequired(
+                $recipient,
                 ['status', 'externalRecipientId', 'id', 'document', 'transferSettings']
             );
             return;
         }
 
-        self::checkFieldsRequired($recipient,
-            ['status', 'externalRecipientId', 'id', 'document', 'transferSettings', 'name', 'email', 'description']
+        self::checkFieldsRequired(
+            $recipient,
+            [
+                'status',
+                'externalRecipientId',
+                'id',
+                'document',
+                'transferSettings',
+                'name',
+                'email',
+                'description'
+            ]
         );
     }
 
     /**
      * @param SplitRecipientsMapperRequestInterface $recipient
+     * @param array $propertyListDontCheck
      * @throws ReflectionException
      */
     private static function checkFieldsRequired(
         SplitRecipientsMapperRequestInterface $recipient,
-        $propertyListDontCheck
+        array $propertyListDontCheck
     ) {
         $recipientArray = Hydrator::extractRecursive($recipient);
 
         array_walk_recursive(
             $recipientArray,
-            function ($leafvalue, $key) use ($propertyListDontCheck) {
-                if ($leafvalue === null && !in_array($key, $propertyListDontCheck)) {
+            function ($value, $key) use ($propertyListDontCheck) {
+                if ($value === null && !in_array($key, $propertyListDontCheck)) {
                     throw new InputException(
                         __("The '{$key}' is required"),
                         null,
