@@ -620,7 +620,6 @@
     <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperRequestInterface" type="MundiPagg\MundiPagg\Model\Request\TransferSetting" />
     <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperResponseInterface" type="MundiPagg\MundiPagg\Model\Response\TransferSetting" />
 
-<!--    Mundipagg\\Core\\Split\\Interfaces\\BankAccountInterface-->
     <!-- Admin checkout -->
     <!--preference for="Magento\Payment\Block\Form" type="MundiPagg\MundiPagg\Block\Form"/-->
 
