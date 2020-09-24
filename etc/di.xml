@@ -607,6 +607,19 @@
     <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\ProductSubscription\RepetitionInterface" type="Mundipagg\Core\Recurrence\Aggregates\Repetition" />
 
 
+
+
+    <preference for="MundiPagg\MundiPagg\Api\SplitRecipientsApiInterface" type="MundiPagg\MundiPagg\Model\Api\SplitRecipients" />
+    <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperRequestInterface" type="MundiPagg\MundiPagg\Model\Request\Recipient" />
+    <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperRequestInterface" type="MundiPagg\MundiPagg\Model\Request\BankAccount" />
+    <preference for="Mundipagg\Core\Split\Interfaces\BankAccountInterface" type="Mundipagg\Core\Split\Aggregates\BankAccount" />
+
+    <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\SplitRecipientsMapperResponseInterface" type="MundiPagg\MundiPagg\Model\Response\Recipient" />
+    <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\BankAccountMapperResponseInterface" type="MundiPagg\MundiPagg\Model\Response\BankAccount" />
+
+    <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperRequestInterface" type="MundiPagg\MundiPagg\Model\Request\TransferSetting" />
+    <preference for="MundiPagg\MundiPagg\Api\ObjectMapper\SplitRecipients\TransferSettingsMapperResponseInterface" type="MundiPagg\MundiPagg\Model\Response\TransferSetting" />
+
     <!-- Admin checkout -->
     <!--preference for="Magento\Payment\Block\Form" type="MundiPagg\MundiPagg\Block\Form"/-->
 

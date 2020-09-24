@@ -189,4 +189,20 @@
             <resource ref="Magento_Catalog::products"/>
         </resources>
     </route>
+
+    <route url="/V1/mundipagg/split/recipients" method="POST">
+        <service class="MundiPagg\MundiPagg\Api\SplitRecipientsApiInterface"
+                 method="save"/>
+        <resources>
+            <resource ref="Magento_Catalog::products"/>
+        </resources>
+    </route>
+
+    <route url="/V1/mundipagg/split/recipients/:id" method="PUT">
+        <service class="MundiPagg\MundiPagg\Api\SplitRecipientsApiInterface"
+                 method="update"/>
+        <resources>
+            <resource ref="Magento_Catalog::products"/>
+        </resources>
+    </route>
 </routes>
