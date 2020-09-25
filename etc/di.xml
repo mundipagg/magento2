@@ -72,6 +72,32 @@
         </arguments>
     </type>
 
+
+
+
+
+
+
+    <virtualType name="MundiPagg\MundiPagg\Model\ResourceModel\Recipients\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">mundipagg_module_core_split_recipient</argument>
+            <argument name="resourceModel" xsi:type="string">MundiPagg\MundiPagg\Model\ResourceModel\Recipients\Collection</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="mundipagg_mundipagg_recipients_grid_data_source" xsi:type="string">MundiPagg\MundiPagg\Model\ResourceModel\Recipients\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+
+
+
+
+
+
     <!-- Final Charges Mundipagg -->
 
     <!-- Cards Mundipagg -->

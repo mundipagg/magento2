@@ -1,0 +1,64 @@
+<div id="page:main-container" class="page-columns">
+    <div id="container" class="main-col">
+        <div class="admin__fieldset-wrapper-content _hide">
+            <fieldset class="admin__fieldset">
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label>
+                            <span>Enable Product</span>
+                        </label>
+                    </div>
+                    <div class="admin__field-control">
+                        <div class="admin__actions-switch"
+                             data-role="switcher">
+                            <input type="checkbox"
+                                   class="admin__actions-switch-checkbox"
+                                   data-bind="attr: {id: uid, name: inputName}, value: value, disable: disabled, hasFocus: focused, simpleChecked: checked"
+                                   id="RP9ULK8"
+                                   name="product[status]"
+                                   value="1">
+                            <label class="admin__actions-switch-label"
+                                   data-bind="attr: {for: uid}"
+                                   for="RP9ULK8">
+                                                <span class="admin__actions-switch-text"
+                                                      data-bind="attr: {'data-text-on': toggleLabels.on, 'data-text-off': toggleLabels.off}"
+                                                      data-text-on="Yes"
+                                                      data-text-off="No"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin__field _required" data-index="name">
+                    <div class="admin__field-label">
+                        <label>
+                            <span>Product Name</span>
+                        </label>
+                    </div>
+                    <div class="admin__field-control">
+                        <input class="admin__control-text" type="text"
+                               name="product[name]">
+                    </div>
+                </div>
+
+                <div class="admin__field">
+                    <div class="admin__field-label">
+                        <label>
+                            <span>Tax Class</span>
+                        </label>
+                    </div>
+                    <div class="admin__field-control">
+                        <select class="admin__control-select"
+                                name="product[tax_class_id]">
+                            <option value="0">None</option>
+                            <option value="2">Taxable Goods
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</div>
+
+

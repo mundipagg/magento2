@@ -13,10 +13,13 @@ class Actions extends Column
     /** Url path */
     const URL_PATH_EDIT = 'mundipagg_mundipagg/*/create';
     const URL_PATH_DELETE = 'mundipagg_mundipagg/*/delete';
+
     /** @var UrlBuilder */
     protected $actionUrlBuilder;
+
     /** @var UrlInterface */
     protected $urlBuilder;
+
     /**
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
@@ -32,11 +35,13 @@ class Actions extends Column
         UrlInterface $urlBuilder,
         array $components = [],
         array $data = []
-    ) {
+    )
+    {
         $this->urlBuilder = $urlBuilder;
         $this->actionUrlBuilder = $actionUrlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
+
     /**
      * Prepare Data Source
      *
@@ -45,17 +50,36 @@ class Actions extends Column
      */
     public function prepareDataSource(array $dataSource)
     {
-        if (isset($dataSource['data']['items'])) {
-            foreach ($dataSource['data']['items'] as &$item) {
-                $type = array_key_exists('plan_id', $item) ? "plans" : "recurrenceproducts";
-                $name = $this->getData('name');
-                if (isset($item['id'])) {
-                    $actions = $this->getActions($name, $type, $item);
-                    $item = array_merge($item, $actions);
-                }
+        if (!isset($dataSource['data']['items'])) {
+            return $dataSource;
+        }
+
+        foreach ($dataSource['data']['items'] as &$item) {
+            $type = $this->discoveryRouteAction();
+            $name = $this->getData('name');
+
+            if (isset($item['id'])) {
+                $actions = $this->getActions($name, $type, $item);
+                $item = array_merge($item, $actions);
             }
         }
+
         return $dataSource;
+    }
+
+    private function discoveryRouteAction()
+    {
+        $pageName = $this->getContext()->getNamespace();
+
+        if (strpos($pageName, 'recipients') !== false) {
+            return 'recipients';
+        }
+
+        if (strpos($pageName, 'plans') !== false) {
+            return 'plans';
+        }
+
+        return 'recurrenceproducts';
     }
 
     protected function getActions($name, $type, $item)
@@ -81,7 +105,6 @@ class Actions extends Column
     {
         $path = str_replace("*", $type, $path);
 
-        $url = $this->urlBuilder->getUrl($path, ['id' => $item['id']]);
-        return $url;
+        return $this->urlBuilder->getUrl($path, ['id' => $item['id']]);
     }
 }
