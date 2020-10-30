@@ -559,6 +559,7 @@ class Magento2PlatformOrderDecorator extends AbstractPlatformOrderDecorator
             $objectManager = ObjectManager::getInstance();
             $quoteFactory = $objectManager->get(QuoteFactory::class);
             $this->quote = $quoteFactory->create()->load($quoteId);
+            $this->quote = $objectManager->create('Magento\Quote\Model\Quote')->loadByIdWithoutStore($quoteId);
         }
 
         return $this->quote;
