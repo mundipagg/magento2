@@ -1122,6 +1122,26 @@ class Magento2PlatformOrderDecorator extends AbstractPlatformOrderDecorator
         return $shipping;
     }
 
+    /**
+     * @param array $allStreetLines
+     * @return array
+     */
+    private function sanitizeStreetsLines($allStreetLines)
+    {
+        $pattern = '/\\\s+\\\s\\\r\\\n|\\\r|\\\n\\\r|\\\n/m';
+        foreach ($allStreetLines as $index => $allStreetLine) {
+            $allStreetLines[$index] = trim(
+                preg_replace(
+                    $pattern,
+                    ' ',
+                    $allStreetLine
+                )
+            );
+        }
+
+        return $allStreetLines;
+    }
+
     protected function getAddress($platformAddress)
     {
         $address = new Address();
@@ -1129,8 +1149,8 @@ class Magento2PlatformOrderDecorator extends AbstractPlatformOrderDecorator
             MPSetup::getModuleConfiguration()->getAddressAttributes();
 
         $addressAttributes = json_decode(json_encode($addressAttributes), true);
-        $allStreetLines = $platformAddress->getStreet();
 
+        $allStreetLines = $this->sanitizeStreetsLines($platformAddress->getStreet());
         $this->validateAddress($allStreetLines);
         $this->validateAddressConfiguration($addressAttributes);
 
