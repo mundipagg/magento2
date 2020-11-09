@@ -41,6 +41,7 @@ use Mundipagg\Core\Payment\ValueObjects\Phone;
 use Mundipagg\Core\Recurrence\Aggregates\Plan;
 use Mundipagg\Core\Recurrence\Services\RecurrenceService;
 use MundiPagg\MundiPagg\Helper\BuildChargeAddtionalInformationHelper;
+use MundiPagg\MundiPagg\Helper\ConcreteClassHelper;
 use MundiPagg\MundiPagg\Helper\RecurrenceProductHelper;
 use MundiPagg\MundiPagg\Gateway\Transaction\Base\Config\Config;
 use MundiPagg\MundiPagg\Model\Cards;
@@ -1128,15 +1129,8 @@ class Magento2PlatformOrderDecorator extends AbstractPlatformOrderDecorator
      */
     private function sanitizeStreetsLines($allStreetLines)
     {
-        $pattern = '/\\\s+\\\s\\\r\\\n|\\\r|\\\n\\\r|\\\n/m';
         foreach ($allStreetLines as $index => $allStreetLine) {
-            $allStreetLines[$index] = trim(
-                preg_replace(
-                    $pattern,
-                    ' ',
-                    $allStreetLine
-                )
-            );
+            $allStreetLines[$index] = ConcreteClassHelper::sanitize($allStreetLine);
         }
 
         return $allStreetLines;
