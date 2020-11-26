@@ -133,7 +133,6 @@ class SalesOrderPlaceAfter implements ObserverInterface
      */
     public function createInvoice($order)
     {
-        return true;
 
         $payment
             ->setIsTransactionClosed(true)
