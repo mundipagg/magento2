@@ -1,7 +1,7 @@
 {
     "name": "mundipagg/mundipagg-magento2-module",
     "license": "MIT",
-     "minimum-stability": "stable",
+     "minimum-stability": "2.9.4",
     "prefer-stable": true,
     "description": "Magento 2 Module Mundipagg",
     "require": {
