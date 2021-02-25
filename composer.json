@@ -1,25 +1,11 @@
 {
     "name": "mundipagg/mundipagg-magento2-module",
     "license": "MIT",
-    "version": "2.9.4",
     "minimum-stability": "dev",
-    "type": "magento2-module",
     "description": "Magento 2 Module Mundipagg",
     "require": {
-        "php": ">=5.6.0",
-        "mundipagg/mundiapi": "^3.0",
-        "mundipagg/ecommerce-module-core": "2.7.3"
     },
     "require-dev": {
-    },
-    "authors":[
-        {
-            "name":"MundiPagg Embeddables Team",
-            "email":"embeddables@mundipagg.com"
-        }
-    ],
-    "scripts": {
-        "test": "phpunit"
     },
     "autoload": {
         "files": [
