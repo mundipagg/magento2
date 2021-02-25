@@ -1,5 +1,5 @@
 {
-    "name": "mundipagg/mundipagg-magento2-module",
+    "name": "signativa/mundipagg-magento2-module",
     "license": "MIT",
      "minimum-stability": "2.9.4",
     "prefer-stable": true,
