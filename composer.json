@@ -31,7 +31,6 @@
             "email":"embeddables@mundipagg.com"
         }
     ],
-    "minimum-stability": "dev",
     "scripts": {
         "test": "phpunit"
     },
