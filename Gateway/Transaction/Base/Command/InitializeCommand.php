@@ -11,6 +11,7 @@
 
 namespace MundiPagg\MundiPagg\Gateway\Transaction\Base\Command;
 
+use Magento\Payment\Gateway\Command\CommandException;
 use Magento\Payment\Gateway\Helper\SubjectReader;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -39,53 +40,61 @@ class InitializeCommand implements CommandInterface
      */
     public function execute(array $commandSubject)
     {
-        /** @var \Magento\Framework\DataObject $stateObject */
-        $stateObject = $commandSubject['stateObject'];
-        $paymentDO = SubjectReader::readPayment($commandSubject);
-        $payment = $paymentDO->getPayment();
+        try {
+            /** @var \Magento\Framework\DataObject $stateObject */
+            $stateObject = $commandSubject['stateObject'];
+            $paymentDO = SubjectReader::readPayment($commandSubject);
+            $payment = $paymentDO->getPayment();
 
-        if (!$payment instanceof Payment) {
-            throw new \LogicException('Order Payment should be provided');
-        }
-        $orderResult = $this->doCoreDetour($payment);
-        if ($orderResult !== false) {
-            $orderResult->loadByIncrementId(
-                $orderResult->getIncrementId()
-            );
+            if (!$payment instanceof Payment) {
+                throw new \LogicException('Order Payment should be provided');
+            }
 
-            $stateObject->setData(
-                OrderInterface::STATE,
-                $orderResult->getState()->getState()
-            );
-            $stateObject->setData(
-                OrderInterface::STATUS,
-                $orderResult->getStatus()
-            );
+            $orderResult = $this->doCoreDetour($payment);
+
+            if ($orderResult !== false) {
+                $orderResult->loadByIncrementId(
+                    $orderResult->getIncrementId()
+                );
+
+                $stateObject->setData(
+                    OrderInterface::STATE,
+                    $orderResult->getState()->getState()
+                );
+                $stateObject->setData(
+                    OrderInterface::STATUS,
+                    $orderResult->getStatus()
+                );
+                return $this;
+            }
+
+            $payment->getOrder()->setCanSendNewEmailFlag(true);
+            $baseTotalDue = $payment->getOrder()->getBaseTotalDue();
+            $totalDue = $payment->getOrder()->getTotalDue();
+            $payment->authorize(true, $baseTotalDue);
+            $payment->setAmountAuthorized($totalDue);
+            $payment->setBaseAmountAuthorized($payment->getOrder()->getBaseTotalDue());
+            $customStatus = $payment->getData('custom_status');
+
+            $stateObject->setData(OrderInterface::STATE, Order::STATE_PENDING_PAYMENT);
+
+            if ($payment->getMethod() === ConfigProvider::CODE || $payment->getMethod() === TwoCreditCardConfigProvider::CODE) {
+                $stateObject->setData(OrderInterface::STATE, $customStatus->getData('state'));
+                $stateObject->setData(OrderInterface::STATUS, $customStatus->getData('status'));
+            }
+
+            if ($payment->getMethod() != ConfigProvider::CODE) {
+                $stateObject->setData(OrderInterface::STATUS, $payment->getMethodInstance()->getConfigData('order_status'));
+            }
+
+            $stateObject->setData('is_notified', false);
+
             return $this;
         }
-
-        $payment->getOrder()->setCanSendNewEmailFlag(true);
-        $baseTotalDue = $payment->getOrder()->getBaseTotalDue();
-        $totalDue = $payment->getOrder()->getTotalDue();
-        $payment->authorize(true, $baseTotalDue);
-        $payment->setAmountAuthorized($totalDue);
-        $payment->setBaseAmountAuthorized($payment->getOrder()->getBaseTotalDue());
-        $customStatus = $payment->getData('custom_status');
-
-        $stateObject->setData(OrderInterface::STATE, Order::STATE_PENDING_PAYMENT);
-
-        if ($payment->getMethod() === ConfigProvider::CODE || $payment->getMethod() === TwoCreditCardConfigProvider::CODE) {
-            $stateObject->setData(OrderInterface::STATE, $customStatus->getData('state'));
-            $stateObject->setData(OrderInterface::STATUS, $customStatus->getData('status'));
+        catch (\Exception | M2WebApiException $e)
+        {
+            throw new CommandException( __($e->getMessage()) );
         }
-
-        if ($payment->getMethod() != ConfigProvider::CODE) {
-            $stateObject->setData(OrderInterface::STATUS, $payment->getMethodInstance()->getConfigData('order_status'));
-        }
-
-        $stateObject->setData('is_notified', false);
-
-        return $this;
     }
 
      /** @return AbstractPlatformOrderDecorator */
