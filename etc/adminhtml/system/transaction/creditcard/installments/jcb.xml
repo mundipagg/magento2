@@ -18,7 +18,7 @@
 	        <config_path>payment/mundipagg_creditcard/installments_number_jcb</config_path>
 	    </field>
 	    <field id="installment_min_amount_jcb" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="20" translate="label" type="text">
-	        <label>Min amount</label>
+	        <label>Min installments amount</label>
 			<backend_model>MundiPagg\MundiPagg\Model\Validation\GenericValidation</backend_model>
 	        <comment />
 	        <config_path>payment/mundipagg_creditcard/installment_min_amount_jcb</config_path>

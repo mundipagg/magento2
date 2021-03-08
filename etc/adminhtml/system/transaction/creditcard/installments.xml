@@ -34,7 +34,7 @@
 	    </field>
 	    <field id="installment_min_amount" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="13" translate="label" type="text">
 			<backend_model>MundiPagg\MundiPagg\Model\Validation\GenericValidation</backend_model>
-	        <label>Min amount</label>
+	        <label>Min installment amount</label>
 	        <comment />
 	        <config_path>payment/mundipagg_creditcard/installment_min_amount</config_path>
             <depends>
