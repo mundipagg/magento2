@@ -16,7 +16,7 @@ CustomerValidator.prototype.validate = function () {
     }
 
     if (address.street.length < 3) {
-        this.errors.push("Invalid address");
+        this.errors.push("Invalid address. Please fill the street lines and try again.");
     }
 }
 

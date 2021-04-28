@@ -416,3 +416,4 @@
 "Module Version", "Versão do Módulo"
 "No brands available", "Nenhuma bandeira configurada"
 "Create Magento's order even with failed payments", "Criar pedidos no Magento mesmo com falha no pagamento"
+"It was not possible to connect to the payment service. Please contact the store administrator.", "Não foi possivel conectar com o serviço de pagamento. Por favor contate o administrador da loja."

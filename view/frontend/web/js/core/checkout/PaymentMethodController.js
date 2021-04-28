@@ -529,6 +529,13 @@ PaymentMethodController.prototype.placeOrder = function (placeOrderObject) {
         }
         return;
     }
+
+    var isPublickKeyValid = this.validatePublickKey(this.platformConfig.publicKey);
+
+    if (!isPublickKeyValid) {
+        return;
+    }
+
     this.model.placeOrder(placeOrderObject);
 };
 
@@ -785,7 +792,7 @@ PaymentMethodController.prototype.addShowMultibuyerListener = function(formObjec
         formHandler.init(formObject);
         formHandler.toggleMultibuyer(formObject);
     });
-}
+};
 
 PaymentMethodController.prototype.isTotalOnAmountInputs = function(formObject, platformConfig) {
     var orderTotal = platformConfig.updateTotals.getTotals()().grand_total;
@@ -794,4 +801,14 @@ PaymentMethodController.prototype.isTotalOnAmountInputs = function(formObject, p
     var totalInputs = (parseFloat(card1) + parseFloat(card2));
 
     return orderTotal == totalInputs;
-}
+};
+
+PaymentMethodController.prototype.validatePublickKey = function (model, publicKey) {
+    if (!publicKey) {
+        var error = "Não foi possivel conectar com o serviço de pagamento. Por favor contate o administrador da loja.";
+        this.model.addErrors(error);
+        return false;
+    }
+
+    return true;
+};
