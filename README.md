@@ -68,7 +68,7 @@ For the future versions, just run composer update
 
 
 ## Requirements
-* PHP >= 5.6
+* PHP >= 7.1
 * Magento >= 2.1
 
 ## Configuration
