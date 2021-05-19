@@ -194,7 +194,7 @@
         <service class="MundiPagg\MundiPagg\Api\ChargeApiInterface"
                  method="cancel"/>
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="Magento_Sales::sales"/>
         </resources>
     </route>
 </routes>
