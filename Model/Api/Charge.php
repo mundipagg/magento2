@@ -3,7 +3,7 @@
 namespace MundiPagg\MundiPagg\Model\Api;
 
 use Magento\Framework\Webapi\Exception as MagentoException;
-use MundiPagg\MundiPagg\Model\Api\ResponseMessage;
+use MundiPagg\MundiPagg\Model\Api\ResponseMessage as ApiResponseMessage;
 use MundiPagg\MundiPagg\Api\ChargeApiInterface;
 use Mundipagg\Core\Kernel\Services\ChargeService;
 use MundiPagg\MundiPagg\Concrete\Magento2CoreSetup;
@@ -36,7 +36,7 @@ class Charge implements ChargeApiInterface
             }
 
             if ($response->isSuccess()) {
-                $message = new ResponseMessage($response->getMessage());
+                $message = new ApiResponseMessage($response->getMessage());
 
                 return $message;
             }
@@ -44,7 +44,7 @@ class Charge implements ChargeApiInterface
             throw new MagentoException(__($response->getMessage()), 0, 400);
 
         } catch (\Exception $exception) {
-            throw new MagentoException(__($exception->getMessage()), 0, 500);
+            throw new MagentoException(__($exception->getMessage()), 0, 400);
         }
     }
 }
