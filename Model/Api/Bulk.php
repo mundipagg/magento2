@@ -68,9 +68,9 @@ class Bulk implements BulkApiInterface
                 $this->executeCurl($key, $request);
             }
 
-           if ($validate['code'] === self::HTTP_BAD_REQUEST) {
+            if ($validate['code'] === self::HTTP_BAD_REQUEST) {
                $this->setFormatedResponse($key, $validate, $request);
-           }
+            }
         }
 
         return $this->getFormatedResponse();
@@ -135,7 +135,7 @@ class Bulk implements BulkApiInterface
         try {
             $this->curl->$method($apiUrl, $params);
             $curlResponse = $this->curl;
-        }catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new MagentoException(
                 __($exception->getMessage()),
                 0,
