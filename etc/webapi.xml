@@ -189,4 +189,20 @@
             <resource ref="Magento_Catalog::products"/>
         </resources>
     </route>
+
+    <route url="/V1/mundipagg/charge/cancel/:id" method="POST">
+        <service class="MundiPagg\MundiPagg\Api\ChargeApiInterface"
+                 method="cancel"/>
+        <resources>
+            <resource ref="Magento_Sales::sales"/>
+        </resources>
+    </route>
+
+    <route url="/V1/mundipagg/bulk" method="POST">
+        <service class="MundiPagg\MundiPagg\Api\BulkApiInterface"
+                 method="execute"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 </routes>

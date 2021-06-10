@@ -38,6 +38,12 @@
     <preference for="MundiPagg\MundiPagg\Api\ProductPlanInterface"
                 type="MundiPagg\MundiPagg\Model\Api\ProductsPlan"/>
 
+    <preference for="MundiPagg\MundiPagg\Api\ChargeApiInterface"
+                type="MundiPagg\MundiPagg\Model\Api\Charge"/>
+
+    <preference for="MundiPagg\MundiPagg\Api\BulkApiInterface"
+                type="MundiPagg\MundiPagg\Model\Api\Bulk"/>
+
     <type name="MundiPagg\MundiPagg\Model\InstallmentsByBrandManagement">
         <arguments>
             <argument name="builder" xsi:type="object">MundiPagg\MundiPagg\Model\Installments\BuilderByBrand</argument>
