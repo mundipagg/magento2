@@ -2,59 +2,17 @@
 
 namespace MundiPagg\MundiPagg\Controller\Adminhtml\Plans;
 
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
+
+use MundiPagg\MundiPagg\Controller\Adminhtml\Plans\PlanAction;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\View\Result\PageFactory;
 use Mundipagg\Core\Kernel\Services\MoneyService;
 use Mundipagg\Core\Recurrence\Aggregates\Plan;
 use Mundipagg\Core\Recurrence\Aggregates\ProductSubscription;
 use Mundipagg\Core\Recurrence\Services\PlanService;
 use Mundipagg\Core\Recurrence\Services\ProductSubscriptionService;
-use MundiPagg\MundiPagg\Concrete\Magento2CoreSetup;
-use MundiPagg\MundiPagg\Helper\ProductHelper;
 
-class SearchProduct extends Action
+class SearchProduct extends PlanAction
 {
-    protected $resultPageFactory = false;
-    /**
-     * @var CollectionFactory
-     */
-    protected $productCollectionFactory;
-    /**
-     * @var JsonFactory
-     */
-    protected $resultJsonFactory;
-    /**
-     * @var ProductHelper
-     */
-    protected $productHelper;
-
-    /**
-     * Constructor
-     *
-     * @param Context $context
-     * @param PageFactory $resultPageFactory
-     * @param CollectionFactory $productCollectionFactory
-     * @param JsonFactory $resultJsonFactory
-     */
-    public function __construct(
-        Context $context,
-        PageFactory $resultPageFactory,
-        CollectionFactory $productCollectionFactory,
-        JsonFactory $resultJsonFactory,
-        ProductHelper $productHelper
-    ) {
-        parent::__construct($context);
-        $this->resultPageFactory = $resultPageFactory;
-        $this->productCollectionFactory = $productCollectionFactory;
-        $this->resultJsonFactory = $resultJsonFactory;
-        $this->productHelper = $productHelper;
-        Magento2CoreSetup::bootstrap();
-    }
-
     /**
      * Index action
      *
@@ -72,7 +30,7 @@ class SearchProduct extends Action
         $product = $objectManager->get('\Magento\Catalog\Model\Product')
             ->load($productId);
 
-        if (empty($product) ) {
+        if (empty($product)) {
             return;
         }
 
