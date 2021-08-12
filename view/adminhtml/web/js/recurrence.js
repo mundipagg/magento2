@@ -26,6 +26,8 @@ require([
                 var currentValue = $(event.target).val().toLowerCase();
                 var arraySearch = [];
                 for (var index in products) {
+                    
+                    if(!products[index].value) continue;          
 
                     var productName = products[index].value.toLowerCase();
 
