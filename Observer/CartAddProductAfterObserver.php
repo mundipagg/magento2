@@ -130,6 +130,9 @@ class CartAddProductAfterObserver implements ObserverInterface
      */
     public function addAmountRepetition(Item $item, $price)
     {
+        $defaultTimezone = $this->timeZone->getDefaultTimezone();
+        date_default_timezone_set($this->timeZone->getConfigTimezone());
+
         $currentRule = $this->getCatalogRule($item->getProduct());
 
         if (
@@ -144,6 +147,8 @@ class CartAddProductAfterObserver implements ObserverInterface
         }
 
         $discountAmount = $this->ruleModel->calcProductPriceRule($item->getProduct(), $price);
+
+        date_default_timezone_set($defaultTimezone);
 
         if ($discountAmount == null) {
             $discountAmount = $price;
