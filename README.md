@@ -1,8 +1,15 @@
-[![CircleCI](https://circleci.com/gh/mundipagg/magento2/tree/master.svg?style=shield)](https://circleci.com/gh/mundipagg/magento2/tree/master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2213fc1ce8f14e7bb0861f232a310233)](https://www.codacy.com/app/mundipagg/magento2?utm_source=github.com&utm_medium=referral&utm_content=mundipagg/magento2&utm_campaign=badger)
-[![Maintainability](https://api.codeclimate.com/v1/badges/e279af4b87b47e56723a/maintainability)](https://codeclimate.com/github/mundipagg/magento2/maintainability)
-[![Latest Stable Version](https://poser.pugx.org/mundipagg/mundipagg-magento2-module/v/stable)](https://packagist.org/packages/mundipagg/mundipagg-magento2-module)
-[![Total Downloads](https://poser.pugx.org/mundipagg/mundipagg-magento2-module/downloads)](https://packagist.org/packages/mundipagg/mundipagg-magento2-module)
+### DEPRECATED | CHECK NEW VERSION > https://github.com/pagarme/magento2
+
+# Mundipagg agora é Pagar.me
+
+Buscando trazer a melhor experiência para os nossos clientes, a Mundipagg agora é parte do Pagar.me.
+
+Somamos nossas funcionalidades e agora você tem acesso a uma plataforma financeira completa, que oferece o melhor das duas soluções em uma experiência unificada.
+
+Você pode customizar nossos produtos e serviços da forma que for melhor para o seu e-commerce. Ficou curioso para saber o que muda? Preparamos um FAQ completo explicando tudo.
+
+[Saiba mais](https://mundipagg.zendesk.com/hc/pt-br/categories/4404432249876-Incorpora%C3%A7%C3%A3o-Mundipagg-pelo-Pagar-me)
+
 
 # Magento2/Mundipagg Integration module
 This is the official Magento2 module for Mundipagg integration
