@@ -78,7 +78,7 @@ For the future versions, just run composer update
 * PHP >= 7.1
 * Magento >= 2.1
   
-(This PHP version is the recommended one, but version 5.6 has been kept in Packagist/Composer for compatibility reasons.)
+(This PHP version is the recommended one, but version 5.6 has been kept in Packagist/Composer for compatibility reasons.).
 
 ## Configuration
 
